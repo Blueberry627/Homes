@@ -6,49 +6,60 @@ namespace Terpz710\Homes\Command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\player\Player;
+use pocketmine\Player;
 use pocketmine\utils\Config;
-use Terpz710\Homes;
 
-class SetHomeCommand extends Command {
+class DelHomeCommand extends Command {
 
-    private $homesConfig;
+    private $dataFolder;
 
-    public function __construct(Config $homesConfig) {
-        parent::__construct("sethome", "Set your home location");
-        $this->setPermission("homeplugin.sethome");
-        $this->homesConfig = $homesConfig;
+    public function __construct(string $dataFolder) {
+        parent::__construct("delhome", "Delete your home location");
+        $this->setPermission("homes.delhome");
+        $this->dataFolder = $dataFolder;
     }
 
     public function execute(CommandSender $sender, string $label, array $args): bool {
         if ($sender instanceof Player) {
-            $player = $sender;
-
             if (!$this->testPermission($sender)) {
                 $sender->sendMessage("You do not have permission to use this command.");
                 return true;
             }
 
-            $homeName = "home"; // Default home name
-            if (!empty($args)) {
-                $homeName = $args[0]; // Use the provided home name if available
+            if (empty($args)) {
+                $sender->sendMessage("Usage: /delhome <home>");
+                return false;
             }
 
-            $homeLocation = [
-                'x' => $player->getX(),
-                'y' => $player->getY(),
-                'z' => $player->getZ(),
-                'world' => $player->getLevel()->getName(),
-            ];
+            $homeName = $args[0];
+            $homeData = $this->loadHomeData($sender);
 
-            $playerName = $player->getName();
-            $this->homesConfig->setNested("$playerName.$homeName", $homeLocation);
-            $this->homesConfig->save();
+            if (isset($homeData[$homeName])) {
+                unset($homeData[$homeName]);
+                $this->saveHomeData($sender, $homeData);
 
-            $sender->sendMessage("Your home location '$homeName' has been set!");
+                $sender->sendMessage("Your home location '$homeName' has been deleted.");
+            } else {
+                $sender->sendMessage("You do not have a home location named '$homeName'.");
+            }
         } else {
             $sender->sendMessage("This command can only be used in-game.");
         }
         return true;
+    }
+
+    private function loadHomeData(Player $player): array {
+        $playerName = strtolower($player->getName());
+        $config = new Config($this->dataFolder . "homes/" . $playerName . ".yml", Config::YAML);
+
+        return $config->get("homes", []);
+    }
+
+    private function saveHomeData(Player $player, array $homeData): void {
+        $playerName = strtolower($player->getName());
+        $config = new Config($this->dataFolder . "homes/" . $playerName . ".yml", Config::YAML);
+
+        $config->set("homes", $homeData);
+        $config->save();
     }
 }
