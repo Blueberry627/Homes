@@ -11,12 +11,9 @@ use Terpz710\Homes;
 
 class SetHomeCommand extends Command {
 
-    private $homeManager;
-
     public function __construct(HomeManager $homeManager) {
         parent::__construct("sethome", "Set your home location");
         $this->setPermission("homes.sethome");
-        $this->homeManager = $homeManager;
     }
 
     public function execute(CommandSender $sender, string $label, array $args): bool {
