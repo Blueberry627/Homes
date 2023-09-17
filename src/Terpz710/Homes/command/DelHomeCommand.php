@@ -6,17 +6,17 @@ namespace Terpz710\Homes\Command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\player\Player;
-use Terpz710\Homes;
+use pocketmine\Player;
+use pocketmine\utils\Config;
 
-class DelHomeCommand extends Command {
+class SetHomeCommand extends Command {
 
-    private $homeManager;
+    private $homesConfig;
 
-    public function __construct(HomeManager $homeManager) {
-        parent::__construct("delhome", "Delete your home location");
-        $this->setPermission("homes.delhome");
-        $this->homeManager = $homeManager;
+    public function __construct(Config $homesConfig) {
+        parent::__construct("sethome", "Set your home location");
+        $this->setPermission("homeplugin.sethome");
+        $this->homesConfig = $homesConfig;
     }
 
     public function execute(CommandSender $sender, string $label, array $args): bool {
@@ -28,11 +28,23 @@ class DelHomeCommand extends Command {
                 return true;
             }
 
-            if ($this->homeManager->deleteHome($player)) {
-                $sender->sendMessage("Your home location has been deleted.");
-            } else {
-                $sender->sendMessage("You have not set a home location to delete.");
+            $homeName = "home"; // Default home name
+            if (!empty($args)) {
+                $homeName = $args[0]; // Use the provided home name if available
             }
+
+            $homeLocation = [
+                'x' => $player->getX(),
+                'y' => $player->getY(),
+                'z' => $player->getZ(),
+                'world' => $player->getLevel()->getName(),
+            ];
+
+            $playerName = $player->getName();
+            $this->homesConfig->setNested("$playerName.$homeName", $homeLocation);
+            $this->homesConfig->save();
+
+            $sender->sendMessage("Your home location '$homeName' has been set!");
         } else {
             $sender->sendMessage("This command can only be used in-game.");
         }
