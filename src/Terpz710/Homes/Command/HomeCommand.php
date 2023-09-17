@@ -13,12 +13,9 @@ use Terpz710\Homes\Main;
 
 class HomeCommand extends Command {
 
-    private $dataFolder;
-
-    public function __construct(string $dataFolder) {
+    public function __construct() {
         parent::__construct("home", "Teleport to your home location");
         $this->setPermission("homes.home");
-        $this->dataFolder = $dataFolder;
     }
 
     public function execute(CommandSender $sender, string $label, array $args): bool {
@@ -35,7 +32,7 @@ class HomeCommand extends Command {
 
             $homeName = $args[0];
 
-            $homeLocation = $this->loadHomeData($sender, $homeName);
+            $homeLocation = $this->LoadData($sender, $homeName);
 
             if ($homeLocation !== null) {
                 $x = $homeLocation['x'];
@@ -43,7 +40,7 @@ class HomeCommand extends Command {
                 $z = $homeLocation['z'];
                 $worldName = $homeLocation['world'];
 
-                $world = $sender->getServer()->getLevelByName($worldName);
+                $world = $sender->getServer()->getWorldByName($worldName);
 
                 if ($world !== null) {
                     $homeVector = new Vector3($x, $y, $z);
