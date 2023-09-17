@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Terpz710\Homes\Command;
+namespace Terpz710\Homes\command;
 
 use pocketmine\player\Player;
 use pocketmine\Server;
