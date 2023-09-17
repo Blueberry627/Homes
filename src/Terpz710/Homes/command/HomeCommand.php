@@ -6,8 +6,9 @@ namespace Terpz710\Home\Command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\math\Vector3;
+use Terpz710\Homes;
 
 class HomeCommand extends Command {
 
