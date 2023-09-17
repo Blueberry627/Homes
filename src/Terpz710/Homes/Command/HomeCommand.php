@@ -47,6 +47,7 @@ class HomeCommand extends Command {
                 foreach($this->worlds as $world){
 			if($world->getFolderName() === $name){
 				return $world;
+			}
 
                 if ($world !== null) {
                     $homeVector = new Vector3($x, $y, $z);
