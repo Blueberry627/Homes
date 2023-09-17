@@ -38,7 +38,7 @@ class SetHomeCommand extends Command {
                 'x' => $sender->getX(),
                 'y' => $sender->getY(),
                 'z' => $sender->getZ(),
-                'world' => $sender->getWorld()->getName(),
+                'world' => $sender->getWorld()->getName(), // Updated method to get the world's name.
             ];
 
             $this->saveHomeData($sender, $homeName, $homeLocation);
