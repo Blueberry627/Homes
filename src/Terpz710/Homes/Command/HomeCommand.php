@@ -9,7 +9,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
 use pocketmine\math\Vector3;
-use Terpz710\Homes/Main;
+use Terpz710\Homes\Main;
 
 class HomeCommand extends Command {
 
