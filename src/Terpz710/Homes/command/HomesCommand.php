@@ -11,12 +11,9 @@ use Terpz710\Homes;
 
 class HomesCommand extends Command {
 
-    private $homeManager;
-
-    public function __construct(HomeManager $homeManager) {
+    public function __construct() {
         parent::__construct("homes", "List your available home locations");
         $this->setPermission("homes.homes");
-        $this->homeManager = $homeManager;
     }
 
     public function execute(CommandSender $sender, string $label, array $args): bool {
