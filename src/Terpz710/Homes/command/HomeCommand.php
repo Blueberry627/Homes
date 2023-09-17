@@ -60,4 +60,5 @@ class HomeCommand extends Command {
         }
         return true;
     }
+}
     
