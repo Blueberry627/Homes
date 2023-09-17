@@ -43,7 +43,7 @@ class HomeCommand extends Command {
                 $z = $homeLocation['z'];
                 $worldName = $homeLocation['world'];
 
-                $world = $sender->getServer()->getWorldByName($worldName);
+                $world = $sender->getServer()->getWorldName($worldName);
 
                 if ($world !== null) {
                     $homeVector = new Vector3($x, $y, $z);
