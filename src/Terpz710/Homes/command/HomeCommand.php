@@ -12,12 +12,9 @@ use Terpz710\Homes;
 
 class HomeCommand extends Command {
 
-    private $homeManager;
-
-    public function __construct(HomeManager $homeManager) {
+    public function __construct() {
         parent::__construct("home", "Teleport to your home location");
         $this->setPermission("homes.home");
-        $this->homeManager = $homeManager;
     }
 
     public function execute(CommandSender $sender, string $label, array $args): bool {
