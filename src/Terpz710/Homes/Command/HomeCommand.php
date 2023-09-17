@@ -9,13 +9,16 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
 use pocketmine\math\Vector3;
-use Terpz710\Homes\Main;
+use Terpz710\Homes/Main;
 
 class HomeCommand extends Command {
 
-    public function __construct() {
+    private $dataFolder;
+
+    public function __construct(string $dataFolder) {
         parent::__construct("home", "Teleport to your home location");
         $this->setPermission("homes.home");
+        $this->dataFolder = $dataFolder;
     }
 
     public function execute(CommandSender $sender, string $label, array $args): bool {
@@ -31,8 +34,7 @@ class HomeCommand extends Command {
             }
 
             $homeName = $args[0];
-
-            $homeLocation = $this->LoadData($sender, $homeName);
+            $homeLocation = $this->loadHomeData($sender, $homeName);
 
             if ($homeLocation !== null) {
                 $x = $homeLocation['x'];
@@ -40,7 +42,7 @@ class HomeCommand extends Command {
                 $z = $homeLocation['z'];
                 $worldName = $homeLocation['world'];
 
-                $world = $sender->getServer()->getWorldByName($worldName);
+                $world = $sender->getServer()->getLevelByName($worldName);
 
                 if ($world !== null) {
                     $homeVector = new Vector3($x, $y, $z);
@@ -57,5 +59,12 @@ class HomeCommand extends Command {
         }
         return true;
     }
+
+    private function loadHomeData(Player $player, string $homeName): ?array {
+        $playerName = strtolower($player->getName());
+        $config = new Config($this->dataFolder . "homes/" . $playerName . ".yml", Config::YAML);
+
+        $playerHomes = $config->get("homes", []);
+        return $playerHomes[$homeName] ?? null;
+    }
 }
-    
