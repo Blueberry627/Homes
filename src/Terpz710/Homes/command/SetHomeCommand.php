@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Terpz710\Homes\command;
+namespace Terpz710\Homes\Command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
