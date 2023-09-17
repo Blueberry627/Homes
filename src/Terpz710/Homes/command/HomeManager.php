@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Terpz710\Homes\Command;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\Server;
+use Terpz710\Homes;
 
 class HomeManager {
 
