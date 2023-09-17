@@ -8,6 +8,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\Config;
+use Terpz710\Homes;
 
 class SetHomeCommand extends Command {
 
