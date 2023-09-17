@@ -62,3 +62,4 @@ class HomeCommand extends Command {
     }
 
     private function
+}
